@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>389</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>10</x>
       <y>0</y>
       <width>256</width>
       <height>192</height>
@@ -27,14 +27,27 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>200</y>
-      <width>97</width>
+      <x>10</x>
+      <y>280</y>
+      <width>121</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Execute script</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="scriptEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>371</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="plainText">
+     <string>rwqrqr</string>
     </property>
    </widget>
   </widget>
@@ -60,5 +73,25 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>dbScriptExecute()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>86</x>
+     <y>338</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>209</x>
+     <y>331</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>dbScriptExecute()</slot>
+ </slots>
 </ui>
