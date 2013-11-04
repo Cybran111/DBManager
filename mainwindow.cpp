@@ -4,6 +4,9 @@
 #include "QSqlQuery"
 #include "QDebug"
 #include "QtSql"
+#include <QSqlQueryModel>
+
+#define STATUSBAR_TIMEOUT 3000
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,12 +14,22 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
+   //Open connection to DB
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("localhost");
     db.setDatabaseName("enterprises");
     db.setUserName("root");
     db.setPassword("VT.YnT;uY@+lb83|yrSL]s<N!");
     db.open();
+    if (db.open())
+    {
+        ui->statusBar->showMessage("Connecting to DB successful",STATUSBAR_TIMEOUT);
+    }
+    else
+    {
+        ui->statusBar->showMessage("Something wrong with DB, DB is enabled?");
+    }
 
 }
 
@@ -28,20 +41,13 @@ MainWindow::~MainWindow()
 void MainWindow::dbScriptExecute()
 
 {
-    QSqlQuery query;
-    query.exec(ui->scriptEdit->toPlainText());
 
-   ui->tableWidget->setColumnCount(query.record().count());
-   ui->tableWidget->setRowCount(query.size());
+    QSqlQueryModel *tableViewModel = new QSqlQueryModel;
+    tableViewModel->setQuery(ui->scriptEdit->toPlainText());
 
-    int index =0;
-    while (query.next()) {
+    ui->tableView->setModel(tableViewModel);
 
-        for (int i=0; i < query.record().count(); i++)
-         {
-             ui->tableWidget->setItem(index,i, new QTableWidgetItem(query.value(i).toString()));
-         }
-        index++;
-     }
+    ui->statusBar->showMessage("Script executed",STATUSBAR_TIMEOUT);
+
 
 }
