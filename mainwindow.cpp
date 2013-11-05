@@ -1,13 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "QSqlDatabase"
-#include "QSqlQuery"
-#include "QDebug"
-#include "QtSql"
-#include <QSqlQueryModel>
 #include <QSqlTableModel>
 
- #include <QPlainTextEdit>
+#include <QSqlRecord>
 
 #define STATUSBAR_TIMEOUT 3000
 
@@ -18,28 +13,30 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-   //Open connection to DB
+   //Set up connection to DB
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("localhost");
     db.setDatabaseName("enterprises");
     db.setUserName("root");
     db.setPassword("VT.YnT;uY@+lb83|yrSL]s<N!");
-    db.open();
 
+    //Connecting...
     if (db.open()){
-    //Initialize basic model
+    //Initialize default model
     QSqlTableModel* tableViewModel = new QSqlTableModel;
     tableViewModel->setTable("enterprise");
     tableViewModel->setEditStrategy(QSqlTableModel::OnFieldChange);
     tableViewModel->select();
+
     ui->tableView->setModel(tableViewModel);
     ui->statusBar->showMessage("Connecting to DB successful",STATUSBAR_TIMEOUT);
+    ui->comboBox->addItems(db.tables());
+    ui->comboBox->setCurrentText("enterprise");
     }
     else
         ui->statusBar->showMessage("Something wrong with DB. MySQL is launched?");
 
-    ui->comboBox->addItems(db.tables());
-    ui->comboBox->setCurrentIndex(3); //set index to enterprises
+
 }
 
 MainWindow::~MainWindow()
@@ -60,5 +57,7 @@ void MainWindow::dbScriptExecute()
     ui->tableView->setModel(tableViewModel);
     ui->statusBar->showMessage("Script executed",STATUSBAR_TIMEOUT);
 
+    //QSqlRecord record = tableViewModel->col(table);
 
+    //tableViewModel->insertRecord(-1,)
 }

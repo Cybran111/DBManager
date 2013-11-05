@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="toolTip">
-     <string>Use SQL, Luke</string>
+     <string>Use it like a WHERE attribution</string>
     </property>
     <property name="whatsThis">
      <string/>
@@ -46,7 +46,7 @@
      <enum>QPlainTextEdit::WidgetWidth</enum>
     </property>
     <property name="plainText">
-     <string>SELECT name,telephone FROM enterprise</string>
+     <string/>
     </property>
    </widget>
    <widget class="QTableView" name="tableView">
@@ -133,6 +133,22 @@
     </hint>
     <hint type="destinationlabel">
      <x>209</x>
+     <y>331</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox</sender>
+   <signal>activated(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>dbScriptExecute()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>339</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>447</x>
      <y>331</y>
     </hint>
    </hints>
