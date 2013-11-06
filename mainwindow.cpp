@@ -5,6 +5,8 @@
 #include <QSqlRecord>
 #include <QtSql>
 #include <QtGui>
+#include <QDebug>
+#include <iostream>
 //#include <QSqlRelationalDelegate>
 //#include <QMessageBox>
 
@@ -41,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     tableModel->setTable(DEFAULT_TABLE);
     tableModel->setEditStrategy(QSqlTableModel::OnFieldChange);
 
+    //set foreigh keys
     tableModel->setRelation(tableModel->fieldIndex("country"),QSqlRelation("country","id_country","name"));
     tableModel->setRelation(tableModel->fieldIndex("city"),QSqlRelation("cities","id_cities","name"));
     tableModel->setRelation(tableModel->fieldIndex("business_form"),QSqlRelation("business_form","id_business_form","name"));
@@ -49,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     tableModel->select();
 
+    //qDebug() << QString::number(tableModel->rowCount());
+    //std::cout << tableModel->rowCount();
 
     ui->tableView->setModel(tableModel);
     ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
@@ -77,19 +82,24 @@ void MainWindow::dbScriptExecute()
     QSqlRelationalTableModel* tableModel = new QSqlRelationalTableModel;
 
     tableModel->setTable(ui->comboBox->currentText());
-    if (tableModel->tableName()=="enterprise"){
 
+    //set foreigh keys
+    if (tableModel->tableName()=="enterprise"){
         tableModel->setRelation(tableModel->fieldIndex("country"),QSqlRelation("country","id_country","name"));
         tableModel->setRelation(tableModel->fieldIndex("city"),QSqlRelation("cities","id_cities","name"));
         tableModel->setRelation(tableModel->fieldIndex("business_form"),QSqlRelation("business_form","id_business_form","name"));
         tableModel->setRelation(tableModel->fieldIndex("industry"),QSqlRelation("industry","id_industry","name"));
-
     }
 
     tableModel->setFilter(ui->scriptEdit->toPlainText());
     tableModel->select(); //applying changes
+    //tableModel->insertRow(tableModel->rowCount())
+
+
     ui->tableView->setModel(tableModel);
     ui->statusBar->showMessage("Script executed",STATUSBAR_TIMEOUT);
+
+    //NOTE use rowCount()+1
 
     //QSqlRecord record = tableModel->col(table);
 
