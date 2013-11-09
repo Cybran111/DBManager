@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSqlRelationalTableModel>
 
 namespace Ui {
 class MainWindow;
@@ -19,9 +20,14 @@ public:
 
 private:
     Ui::MainWindow *ui;
+      QSqlRelationalTableModel* tableModel;
+      void changeModel();
 
 public slots:
     void dbScriptExecute();
+    void addItem();
+    void deleteItem();
+    void findNearest();
 };
 
 #endif // MAINWINDOW_H

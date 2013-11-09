@@ -14,7 +14,7 @@
    <string>DB Manager</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="executeFilter">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -55,13 +55,13 @@
      <bool>false</bool>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>150</number>
+     <number>100</number>
     </attribute>
     <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>150</number>
+     <number>25</number>
     </attribute>
     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-     <bool>true</bool>
+     <bool>false</bool>
     </attribute>
     <attribute name="horizontalHeaderStretchLastSection">
      <bool>true</bool>
@@ -70,7 +70,7 @@
      <bool>false</bool>
     </attribute>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="dbBox">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -102,17 +102,43 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QToolButton" name="toolButton">
+   <widget class="QPushButton" name="addItem">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>460</y>
-      <width>28</width>
-      <height>29</height>
+      <x>320</x>
+      <y>450</y>
+      <width>97</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>...</string>
+     <string>Add item</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="deleteItem">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>450</y>
+      <width>97</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Delete item</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>450</y>
+      <width>97</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>hellNearest</string>
     </property>
    </widget>
   </widget>
@@ -147,14 +173,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>executeFilter</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>dbScriptExecute()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>86</x>
-     <y>338</y>
+     <y>490</y>
     </hint>
     <hint type="destinationlabel">
      <x>209</x>
@@ -163,14 +189,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>comboBox</sender>
+   <sender>dbBox</sender>
    <signal>activated(int)</signal>
    <receiver>MainWindow</receiver>
    <slot>dbScriptExecute()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>188</x>
-     <y>339</y>
+     <y>490</y>
     </hint>
     <hint type="destinationlabel">
      <x>447</x>
@@ -178,8 +204,59 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>addItem</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>addItem()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>387</x>
+     <y>520</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>360</x>
+     <y>423</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>deleteItem</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>deleteItem()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>494</x>
+     <y>511</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>480</x>
+     <y>395</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>findNearest()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>590</x>
+     <y>497</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>591</x>
+     <y>371</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>dbScriptExecute()</slot>
+  <slot>addItem()</slot>
+  <slot>deleteItem()</slot>
+  <slot>findNearest()</slot>
  </slots>
 </ui>

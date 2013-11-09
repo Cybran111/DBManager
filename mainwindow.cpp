@@ -2,23 +2,18 @@
 #include "ui_mainwindow.h"
 #include <QSqlRelationalTableModel>
 #include <QSqlTableModel>
-#include <QSqlRecord>
 #include <QtSql>
 #include <QtGui>
-#include <QDebug>
-#include <iostream>
-//#include <QSqlRelationalDelegate>
-//#include <QMessageBox>
 
 #define DEFAULT_TABLE "enterprise"
 #define STATUSBAR_TIMEOUT 3000
 
 //TODO LIST
 /*
- * 1. Make add/delete table item
- * DONE. Combobox for foreigh keys
+ * DONE. Make add/delete table item
+ * DONE. dbBox for foreigh keys
  * 3. Test operator SOUNDEX for search nearest values
- * 4. User-friendly columns
+ * 4. User-friendly russian-style columns
  * 5. Set DB on cybran.ru //NOTE Do it when deploying
  */
 
@@ -35,40 +30,22 @@ MainWindow::MainWindow(QWidget *parent) :
     db.setUserName("root");
     db.setPassword("VT.YnT;uY@+lb83|yrSL]s<N!");
 
-
     //Connecting...
     if (db.open()){
     //Initialize default model
-    QSqlRelationalTableModel* tableModel = new QSqlRelationalTableModel;
-    tableModel->setTable(DEFAULT_TABLE);
+    tableModel = new QSqlRelationalTableModel;
     tableModel->setEditStrategy(QSqlTableModel::OnFieldChange);
 
-    //set foreigh keys
-    tableModel->setRelation(tableModel->fieldIndex("country"),QSqlRelation("country","id_country","name"));
-    tableModel->setRelation(tableModel->fieldIndex("city"),QSqlRelation("cities","id_cities","name"));
-    tableModel->setRelation(tableModel->fieldIndex("business_form"),QSqlRelation("business_form","id_business_form","name"));
-    tableModel->setRelation(tableModel->fieldIndex("industry"),QSqlRelation("industry","id_industry","name"));
+    ui->dbBox->addItems(db.tables());
+    ui->dbBox->setCurrentText(DEFAULT_TABLE);
 
-
-    tableModel->select();
-
-    //qDebug() << QString::number(tableModel->rowCount());
-    //std::cout << tableModel->rowCount();
-
-    ui->tableView->setModel(tableModel);
+    changeModel();
     ui->tableView->setItemDelegate(new QSqlRelationalDelegate(ui->tableView));
 
     ui->statusBar->showMessage("Connecting to DB successful",STATUSBAR_TIMEOUT);
-
-    ui->comboBox->addItems(db.tables());
-    ui->comboBox->setCurrentText(DEFAULT_TABLE);
-
-
     }
     else
-    {
         ui->statusBar->showMessage("Something wrong with DB. MySQL is launched?");
-    }
 }
 
 MainWindow::~MainWindow()
@@ -77,31 +54,52 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::dbScriptExecute()
-
 {
-    QSqlRelationalTableModel* tableModel = new QSqlRelationalTableModel;
+    changeModel();
+    ui->statusBar->showMessage("Script executed",STATUSBAR_TIMEOUT);
+}
 
-    tableModel->setTable(ui->comboBox->currentText());
+void MainWindow::addItem()
+{
+        tableModel->insertRow(tableModel->rowCount());
+        QModelIndex index = tableModel->index(tableModel->rowCount()-1, tableModel->fieldIndex("name"));
+        ui->tableView->setCurrentIndex(index);
+        ui->tableView->edit(index);
+}
 
+void MainWindow::deleteItem()
+{
+    tableModel->removeRow(ui->tableView->currentIndex().row());
+}
+
+void MainWindow::changeModel()
+{
+    tableModel->setTable(ui->dbBox->currentText());
     //set foreigh keys
-    if (tableModel->tableName()=="enterprise"){
-        tableModel->setRelation(tableModel->fieldIndex("country"),QSqlRelation("country","id_country","name"));
-        tableModel->setRelation(tableModel->fieldIndex("city"),QSqlRelation("cities","id_cities","name"));
-        tableModel->setRelation(tableModel->fieldIndex("business_form"),QSqlRelation("business_form","id_business_form","name"));
-        tableModel->setRelation(tableModel->fieldIndex("industry"),QSqlRelation("industry","id_industry","name"));
+    if (tableModel->tableName() == "enterprise"){
+    tableModel->setRelation(tableModel->fieldIndex("country"),QSqlRelation("country","id_country","name"));
+    tableModel->setRelation(tableModel->fieldIndex("city"),QSqlRelation("cities","id_cities","name"));
+    tableModel->setRelation(tableModel->fieldIndex("business_form"),QSqlRelation("business_form","id_business_form","name"));
+    tableModel->setRelation(tableModel->fieldIndex("industry"),QSqlRelation("industry","id_industry","name"));
     }
+    //FIXME trouble with setFilter("name='Borland'")
+//    tableModel->setFilter("name='Borland'");
 
     tableModel->setFilter(ui->scriptEdit->toPlainText());
-    tableModel->select(); //applying changes
-    //tableModel->insertRow(tableModel->rowCount())
-
+    tableModel->select();
 
     ui->tableView->setModel(tableModel);
-    ui->statusBar->showMessage("Script executed",STATUSBAR_TIMEOUT);
+    ui->tableView->resizeColumnsToContents();
+    qDebug() << tableModel->query().lastQuery();
+}
+//}
 
-    //NOTE use rowCount()+1
+void MainWindow::findNearest()
+{
+//    QString query = "Borlewfwef";
+//    query.length()
+//    while (query.length() !=0)
+//    {
 
-    //QSqlRecord record = tableModel->col(table);
-
-    //tableModel->insertRecord(-1,)
+//    }
 }
