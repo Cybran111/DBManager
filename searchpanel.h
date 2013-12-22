@@ -2,6 +2,7 @@
 #define SEARCHPANEL_H
 
 #include <QFrame>
+#include "QSqlRelationalTableModel"
 
 namespace Ui {
 class searchPanel;
@@ -14,6 +15,10 @@ class searchPanel : public QFrame
 public:
     explicit searchPanel(QWidget *parent = 0);
     ~searchPanel();
+    QString getParameters();
+    void setComboBox(QSqlRelationalTableModel *tableModel);
+private slots:
+    void deletePanel();
 
 private:
     Ui::searchPanel *ui;

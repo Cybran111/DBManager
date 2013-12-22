@@ -15,8 +15,17 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+	mainwindow.cpp \
+    choosedb.cpp \
+    searchdialog.cpp \
+    searchpanel.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    choosedb.h \
+    searchdialog.h \
+    searchpanel.h \
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    choosedb.ui \
+    searchdialog.ui \
+    searchpanel.ui
